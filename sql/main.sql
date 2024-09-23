@@ -1,33 +1,33 @@
 BEGIN;
 
 
-CREATE TABLE IF NOT EXISTS public.vaga
+CREATE TABLE IF NOT EXISTS public.slot
 (
     id serial NOT NULL,
-    codigo character varying(12) NOT NULL,
-    numero smallint NOT NULL,
-    andar character varying(1) NOT NULL,
+    code character varying(12) NOT NULL UNIQUE,
+    number smallint NOT NULL,
+    floor character varying(1) NOT NULL,
     PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS public.carro
+CREATE TABLE IF NOT EXISTS public.car
 (
     id serial NOT NULL,
-    codigo character varying(125) NOT NULL,
-    placa character(7) NOT NULL,
-    marca character varying(50) NOT NULL,
-    modelo character varying(50) NOT NULL,
+    code character varying(125) NOT NULL UNIQUE,
+    lic_plate character(7) NOT NULL,
+    brand character varying(50) NOT NULL,
+    model character varying(50) NOT NULL,
     PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS public.ocupacao
+CREATE TABLE IF NOT EXISTS public.occupation
 (
     id serial NOT NULL,
-    vaga_id smallint NOT NULL,
-    carro_id smallint,
+    slot_id smallint NOT NULL,
+    car_id smallint,
     user_id smallint NOT NULL,
-    entrada time with time zone,
-    saida time with time zone
+    entry time with time zone,
+    exit time with time zone
 );
 
 CREATE TABLE IF NOT EXISTS public.user
@@ -40,24 +40,24 @@ CREATE TABLE IF NOT EXISTS public.user
     PRIMARY KEY (id)
 );
 
-ALTER TABLE IF EXISTS public.ocupacao
-    ADD CONSTRAINT fk_ocupacao_vaga FOREIGN KEY (vaga_id)
-    REFERENCES public.vaga (id) MATCH SIMPLE
+ALTER TABLE IF EXISTS public.occupation
+    ADD CONSTRAINT fk_occupation_slot FOREIGN KEY (slot_id)
+    REFERENCES public.slot (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
 
 
-ALTER TABLE IF EXISTS public.ocupacao
-    ADD CONSTRAINT fk_ocupacao_carro FOREIGN KEY (carro_id)
-    REFERENCES public.carro (id) MATCH SIMPLE
+ALTER TABLE IF EXISTS public.occupation
+    ADD CONSTRAINT fk_occupation_car FOREIGN KEY (car_id)
+    REFERENCES public.car (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
 
 
-ALTER TABLE IF EXISTS public.ocupacao
-    ADD CONSTRAINT fk_ocupacao_user FOREIGN KEY (user_id)
+ALTER TABLE IF EXISTS public.occupation
+    ADD CONSTRAINT fk_occupation_user FOREIGN KEY (user_id)
     REFERENCES public.user (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
