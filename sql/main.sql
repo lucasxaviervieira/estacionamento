@@ -25,18 +25,18 @@ CREATE TABLE IF NOT EXISTS public.ocupacao
     id serial NOT NULL,
     vaga_id smallint NOT NULL,
     carro_id smallint,
-    usuario_id smallint NOT NULL,
+    user_id smallint NOT NULL,
     entrada time with time zone,
     saida time with time zone
 );
 
-CREATE TABLE IF NOT EXISTS public.usuario
+CREATE TABLE IF NOT EXISTS public.user
 (
     id serial NOT NULL,
-    nome character varying(125) NOT NULL,
-    nome_usuario character varying(125) NOT NULL,
-    senha character varying(255) NOT NULL,
-    funcao character varying(6) NOT NULL DEFAULT normal,
+    name character varying(125) NOT NULL,
+    username character varying(125) NOT NULL,
+    password character varying(255) NOT NULL,
+    role character varying(6) NOT NULL DEFAULT 'normal',
     PRIMARY KEY (id)
 );
 
@@ -57,8 +57,8 @@ ALTER TABLE IF EXISTS public.ocupacao
 
 
 ALTER TABLE IF EXISTS public.ocupacao
-    ADD CONSTRAINT fk_ocupacao_usuario FOREIGN KEY (usuario_id)
-    REFERENCES public.usuario (id) MATCH SIMPLE
+    ADD CONSTRAINT fk_ocupacao_user FOREIGN KEY (user_id)
+    REFERENCES public.user (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;

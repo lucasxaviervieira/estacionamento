@@ -5,7 +5,14 @@ description = "Default template for PDM package"
 authors = [
     {name = "lucasxaviervieira", email = "lucasdavid.xavier@gmail.com"},
 ]
-dependencies = []
+dependencies = [
+    "flask>=3.0.3",
+    "flask-sqlalchemy>=3.1.1",
+    "psycopg2-binary>=2.9.9",
+    "python-dotenv>=1.0.1",
+    "werkzeug>=3.0.4",
+    "pyjwt>=2.9.0",
+]
 requires-python = "==3.10.*"
 readme = "README.md"
 license = {text = "MIT"}
