@@ -1,4 +1,4 @@
-from models.user import db, User
+from models import db, User
 from services.security import HashPassword
 from services.token import Token
 
@@ -34,10 +34,7 @@ class UserController:
         db.session.commit()
         return new_user.to_dict()
 
-    def auth(self, data):
-        inp_username = data["username"]
-        inp_password = data["password"]
-
+    def auth(self, inp_username, inp_password):
         stored_user = self.get_user_by_username(inp_username)
         stored_password = stored_user["password"]
 
@@ -46,8 +43,8 @@ class UserController:
         if verify_password:
             try:
                 stored_user_id = stored_user["id"]
-                auth = tk.auth(stored_user_id)
-                return auth
+                token = tk.provide_token(stored_user_id)
+                return token
             except Exception as error:
                 return error
         else:

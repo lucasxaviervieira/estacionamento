@@ -1,6 +1,7 @@
 from flask import Flask
-from models import db
+from models import *
 from views.user_view import bp_user
+from views.main_view import bp_main
 from services.config import Config
 
 app = Flask(__name__)
@@ -14,6 +15,7 @@ with app.app_context():
 
 
 app.register_blueprint(bp_user)
+app.register_blueprint(bp_main)
 
 if __name__ == "__main__":
     app.run(debug=True)

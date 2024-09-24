@@ -12,13 +12,15 @@ user_controller = UserController()
 @bp_user.route("/user/<int:user_id>", methods=["GET"])
 def get_user(user_id):
     users = user_controller.get_user_by_id(user_id)
-    return jsonify(users)
+    response = {"data": users}
+    return jsonify(response)
 
 
 @bp_user.route("/users", methods=["GET"])
 def list_users():
     users = user_controller.get_all_users()
-    return jsonify(users)
+    response = {"data": users}
+    return jsonify(response)
 
 
 @bp_user.route("/user", methods=["POST"])
@@ -50,7 +52,7 @@ def login():
             400,
         )
     try:
-        access_token = user_controller.auth(data)
+        access_token = user_controller.auth(username, password)
         response = {"data": access_token}
         return jsonify(response), 200
     except:
@@ -60,10 +62,11 @@ def login():
 @bp_user.route("/test_access_token", methods=["POST"])
 def test_access_token():
     data = request.get_json()
-    access_token = data.get("access_token")
+    access_token = data.get("bearer_token")
 
     try:
         response = user_controller.verify_access_token(access_token)
+        response = {"data": response}
         return jsonify(response), 200
     except:
         return jsonify({"error": "some error as occurred"}), 400

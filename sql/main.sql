@@ -13,8 +13,7 @@ CREATE TABLE IF NOT EXISTS public.slot
 CREATE TABLE IF NOT EXISTS public.car
 (
     id serial NOT NULL,
-    code character varying(125) NOT NULL UNIQUE,
-    lic_plate character(7) NOT NULL,
+    lic_plate character(7) NOT NULL UNIQUE,
     brand character varying(50) NOT NULL,
     model character varying(50) NOT NULL,
     PRIMARY KEY (id)
