@@ -49,6 +49,3 @@ class UserController:
                 return error
         else:
             return {"message": "User not found"}
-
-    def verify_access_token(self, token):
-        return tk.decode_access_token(token)

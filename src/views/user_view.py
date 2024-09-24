@@ -1,6 +1,5 @@
 from flask import Blueprint, request, jsonify
 
-
 from controllers.user_controller import UserController
 
 
@@ -54,19 +53,6 @@ def login():
     try:
         access_token = user_controller.auth(username, password)
         response = {"data": access_token}
-        return jsonify(response), 200
-    except:
-        return jsonify({"error": "some error as occurred"}), 400
-
-
-@bp_user.route("/test_access_token", methods=["POST"])
-def test_access_token():
-    data = request.get_json()
-    access_token = data.get("bearer_token")
-
-    try:
-        response = user_controller.verify_access_token(access_token)
-        response = {"data": response}
         return jsonify(response), 200
     except:
         return jsonify({"error": "some error as occurred"}), 400

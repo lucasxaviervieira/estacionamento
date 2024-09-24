@@ -4,6 +4,7 @@ from views.user_view import bp_user
 from views.main_view import bp_main
 from services.config import Config
 
+
 app = Flask(__name__)
 app.config.from_object(Config)
 

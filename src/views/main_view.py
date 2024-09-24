@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from services.verify_route import token_required
 
 from controllers import SlotController, CarController, OccupationController
 
@@ -10,6 +11,7 @@ occupation_controller = OccupationController()
 
 
 @bp_main.route("/slot", methods=["POST"])
+@token_required
 def create_slot():
     data = request.get_json()
     try:
@@ -20,6 +22,7 @@ def create_slot():
 
 
 @bp_main.route("/slots", methods=["GET"])
+@token_required
 def list_slots():
     try:
         slots = slot_controller.get_all_slots()
@@ -29,6 +32,7 @@ def list_slots():
 
 
 @bp_main.route("/car", methods=["POST"])
+@token_required
 def create_car():
     try:
         data = request.get_json()
@@ -39,6 +43,7 @@ def create_car():
 
 
 @bp_main.route("/cars", methods=["GET"])
+@token_required
 def list_cars():
     try:
         cars = car_controller.get_all_cars()
@@ -48,6 +53,7 @@ def list_cars():
 
 
 @bp_main.route("/occupation", methods=["POST"])
+@token_required
 def create_occupation():
     try:
         data = request.get_json()
@@ -58,6 +64,7 @@ def create_occupation():
 
 
 @bp_main.route("/occupations", methods=["GET"])
+@token_required
 def list_occupations():
     try:
         occupations = occupation_controller.get_all_occupations()

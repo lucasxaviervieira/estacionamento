@@ -1,0 +1,40 @@
+openapi: 3.0.0
+info:
+  title: API de Gestão de Ocupações
+  description: API para gerenciamento de slots e ocupações.
+  version: "1.0.0"
+servers:
+  - url: http://localhost:5000
+paths:
+  /ocupacao:
+    post:
+      summary: Criar uma nova ocupação
+      description: Cria uma nova ocupação com um slot, carro e usuário.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                slot_id:
+                  type: integer
+                  example: 1
+                car_id:
+                  type: integer
+                  example: 2
+                user_id:
+                  type: integer
+                  example: 3
+                entry:
+                  type: string
+                  format: date-time
+                  example: "2024-09-22T14:30:00"
+                exit:
+                  type: string
+                  format: date-time
+                  example: "2024-09-22T16:45:00"
+      responses:
+        201:
+          description: Ocupação criada com sucesso.
+        401:
+          description: Não autorizado.
