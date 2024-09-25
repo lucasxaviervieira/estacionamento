@@ -18,6 +18,7 @@ with app.app_context():
 app.register_blueprint(bp_user)
 app.register_blueprint(bp_main)
 app.register_blueprint(bp_swagger)
+app.register_blueprint(bp_front)
 
 if __name__ == "__main__":
     app.run(debug=True)

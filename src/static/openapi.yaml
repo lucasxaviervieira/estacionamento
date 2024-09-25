@@ -37,11 +37,11 @@ paths:
                 username:
                   type: string
                   description: O nome de usuário
-                  example: "user123"
+                  example: "lucas.vieira"
                 password:
                   type: string
                   description: A senha do usuário
-                  example: "password123"
+                  example: "lucas123"
       responses:
         "200":
           description: Token de acesso gerado com sucesso

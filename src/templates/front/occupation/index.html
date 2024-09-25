@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Occupation Management</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      .btn {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        border: none;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 15px;
+      }
+
+      .btn:hover {
+        background-color: #0056b3;
+      }
+
+      .result {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #e7f3ff;
+        border: 1px solid #007bff;
+        border-radius: 5px;
+      }
+
+      .error {
+        color: red;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Occupation Management</h2>
+
+      <div class="form-group">
+        <label for="occupation">New Occupation:</label>
+        <input type="text" id="occupation" name="occupation" />
+      </div>
+      <button class="btn" id="createOccupationBtn">Create Occupation</button>
+      <div id="createResult" class="result"></div>
+      <div id="createError" class="error"></div>
+
+      <button class="btn" id="listOccupationsBtn">List Occupations</button>
+      <div id="listResult" class="result"></div>
+      <div id="listError" class="error"></div>
+    </div>
+
+    <script>
+      const bearerToken = localStorage.getItem("access_token");
+      document
+        .getElementById("createOccupationBtn")
+        .addEventListener("click", function () {
+          const occupation = document.getElementById("occupation").value.trim();
+          const createError = document.getElementById("createError");
+          const createResult = document.getElementById("createResult");
+
+          if (occupation === "") {
+            createError.textContent = "Occupation field cannot be empty";
+            return;
+          }
+
+          createError.textContent = "";
+
+          fetch("/occupation", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${bearerToken}`,
+            },
+            body: JSON.stringify({ occupation: occupation }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.error) {
+                createError.textContent = `Error: ${data.error}`;
+              } else {
+                createResult.textContent = "Occupation created successfully!";
+                document.getElementById("occupation").value = "";
+              }
+            })
+            .catch((error) => {
+              createError.textContent = `Request failed: ${error.message}`;
+            });
+        });
+
+      document
+        .getElementById("listOccupationsBtn")
+        .addEventListener("click", function () {
+          const listError = document.getElementById("listError");
+          const listResult = document.getElementById("listResult");
+
+          listError.textContent = "";
+          listResult.textContent = "Loading...";
+
+          fetch("/occupation", {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${bearerToken}`,
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              const newData = data[0].data;
+              console.log(newData);
+              if (data.error) {
+                listError.textContent = `Error: ${data.error}`;
+              } else {
+                const occupations = data[0].data;
+                if (occupations.length === 0) {
+                  listResult.textContent = "No occupations found.";
+                } else {
+                  listResult.innerHTML =
+                    "<ul>" +
+                    occupations
+                      .map(
+                        (occ) =>
+                          `<li>${occ.id},${occ.car_id},${occ.slot_id},${occ.entry}</li>`
+                      )
+                      .join("") +
+                    "</ul>";
+                }
+              }
+            })
+            .catch((error) => {
+              listError.textContent = `Request failed: ${error.message}`;
+            });
+        });
+    </script>
+  </body>
+</html>
