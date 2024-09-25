@@ -1,14 +1,11 @@
 from flask import Flask
 from models import *
-
-# from views.user_view import bp_user
-# from views.main_view import bp_main
-# from views.swagger_view import bp_swagger
 from views import *
 from services.config import Config
 
 
 app = Flask(__name__)
+app.config["JSON_SORT_KEYS"] = False
 app.config.from_object(Config)
 
 

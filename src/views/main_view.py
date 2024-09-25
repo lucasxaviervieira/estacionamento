@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, Response, request, json, jsonify
 from services.verify_route import token_required
 
 from controllers import SlotController, CarController, OccupationController
@@ -16,7 +16,10 @@ def create_slot():
     data = request.get_json()
     try:
         response = slot_controller.create_slot(data)
-        return jsonify({"data": response}), 200
+        response = ({"data": response}), 200
+        return Response(
+            json.dumps(response, sort_keys=False), mimetype="application/json"
+        )
     except:
         return jsonify({"error": "some error has occured"}), 400
 
@@ -26,7 +29,10 @@ def create_slot():
 def list_slots():
     try:
         slots = slot_controller.get_all_slots()
-        return jsonify({"data": slots}), 200
+        response = ({"data": slots}), 200
+        return Response(
+            json.dumps(response, sort_keys=False), mimetype="application/json"
+        )
     except:
         return jsonify({"error": "some error has occured"}), 400
 
@@ -36,8 +42,10 @@ def list_slots():
 def create_car():
     try:
         data = request.get_json()
-        response = car_controller.create_car(data)
-        return jsonify(response), 200
+        response = car_controller.create_car(data), 200
+        return Response(
+            json.dumps(response, sort_keys=False), mimetype="application/json"
+        )
     except:
         return jsonify({"error": "some error has occured"}), 400
 
@@ -47,7 +55,10 @@ def create_car():
 def list_cars():
     try:
         cars = car_controller.get_all_cars()
-        return jsonify({"data": cars}), 200
+        response = ({"data": cars}), 200
+        return Response(
+            json.dumps(response, sort_keys=False), mimetype="application/json"
+        )
     except:
         return jsonify({"error": "some error has occured"}), 400
 
@@ -57,8 +68,10 @@ def list_cars():
 def create_occupation():
     try:
         data = request.get_json()
-        response = occupation_controller.create_occupation(data)
-        return jsonify(response), 200
+        response = occupation_controller.create_occupation(data), 200
+        return Response(
+            json.dumps(response, sort_keys=False), mimetype="application/json"
+        )
     except Exception as e:
         return jsonify({"error": "some error has occured", "specified": e}), 400
 
@@ -68,6 +81,9 @@ def create_occupation():
 def list_occupations():
     try:
         occupations = occupation_controller.get_all_occupations()
-        return jsonify({"data": occupations}), 200
+        response = {"data": occupations}, 200
+        return Response(
+            json.dumps(response, sort_keys=False), mimetype="application/json"
+        )
     except Exception as e:
         return jsonify({"error": "some error has occured", "specified": e}), 400

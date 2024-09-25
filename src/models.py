@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from collections import OrderedDict
 
 db = SQLAlchemy()
 
@@ -17,12 +18,14 @@ class Slot(db.Model):
         self.floor = floor
 
     def to_dict(self):
-        return {
-            "id": self.id,
-            "code": self.code,
-            "number": self.number,
-            "floor": self.floor,
-        }
+        return OrderedDict(
+            {
+                "id": self.id,
+                "code": self.code,
+                "number": self.number,
+                "floor": self.floor,
+            }
+        )
 
 
 class Car(db.Model):
@@ -39,12 +42,14 @@ class Car(db.Model):
         self.model = model
 
     def to_dict(self):
-        return {
-            "id": self.id,
-            "lic_plate": self.lic_plate,
-            "brand": self.brand,
-            "model": self.model,
-        }
+        return OrderedDict(
+            {
+                "id": self.id,
+                "lic_plate": self.lic_plate,
+                "brand": self.brand,
+                "model": self.model,
+            }
+        )
 
 
 class User(db.Model):
@@ -63,13 +68,15 @@ class User(db.Model):
         self.role = role
 
     def to_dict(self):
-        return {
-            "id": self.id,
-            "name": self.name,
-            "username": self.username,
-            "password": self.password,
-            "role": self.role,
-        }
+        return OrderedDict(
+            {
+                "id": self.id,
+                "name": self.name,
+                "username": self.username,
+                "password": self.password,
+                "role": self.role,
+            }
+        )
 
 
 class Occupation(db.Model):
@@ -94,10 +101,13 @@ class Occupation(db.Model):
         self.exit = exit
 
     def to_dict(self):
-        return {
-            "id": self.id,
-            "car_id": self.car_id,
-            "user_id": self.user_id,
-            "entry": self.entry.isoformat() if self.entry else None,
-            "exit": self.exit.isoformat() if self.exit else None,
-        }
+        return OrderedDict(
+            {
+                "id": self.id,
+                "car_id": self.car_id,
+                "user_id": self.user_id,
+                "slot_id": self.slot_id,
+                "entry": self.entry.isoformat() if self.entry else None,
+                "exit": self.exit.isoformat() if self.exit else None,
+            }
+        )

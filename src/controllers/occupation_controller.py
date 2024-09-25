@@ -12,7 +12,7 @@ class OccupationController:
         car_id = data.get("car_id")
         user_id = data.get("user_id")
         entry = data.get("entry")
-        exit_time = data.get("exit")
+        exit = None
 
         if not all([slot_id, user_id, entry]):
             return {
@@ -21,14 +21,13 @@ class OccupationController:
 
         try:
             entry_datetime = datetime.fromisoformat(entry)
-            exit_datetime = datetime.fromisoformat(exit_time) if exit_time else None
 
             new_occupation = Occupation(
                 slot_id=slot_id,
                 car_id=car_id,
                 user_id=user_id,
                 entry=entry_datetime,
-                exit=exit_datetime,
+                exit=exit,
             )
             db.session.add(new_occupation)
             db.session.commit()
