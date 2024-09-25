@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from services.verify_route import token_required
 
 from controllers.user_controller import UserController
 
@@ -9,13 +10,15 @@ user_controller = UserController()
 
 
 @bp_user.route("/user/<int:user_id>", methods=["GET"])
+@token_required
 def get_user(user_id):
     users = user_controller.get_user_by_id(user_id)
     response = {"data": users}
     return jsonify(response)
 
 
-@bp_user.route("/users", methods=["GET"])
+@bp_user.route("/user", methods=["GET"])
+@token_required
 def list_users():
     users = user_controller.get_all_users()
     response = {"data": users}
@@ -23,6 +26,7 @@ def list_users():
 
 
 @bp_user.route("/user", methods=["POST"])
+@token_required
 def create_user():
     data = request.get_json()
     name = data.get("name")

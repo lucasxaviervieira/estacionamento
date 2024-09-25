@@ -1,0 +1,354 @@
+openapi: 3.0.0
+info:
+  title: API Gerenciamento de Estacionamento
+  description: API para o gerenciamento de vagas, carros e ocupações.
+  version: 1.0.0
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+tags:
+  - name: Authentication and Authorization
+    description: Operações relacionadas à autenticação e autorização
+  - name: User
+    description: Operações relacionadas a usuário
+  - name: Slot
+    description: Operações relacionadas a slots de estacionamento
+  - name: Car
+    description: Operações relacionadas aos carros
+  - name: Occupation
+    description: Operações relacionadas às ocupações de vagas
+
+paths:
+  /token:
+    post:
+      summary: Login
+      tags:
+        - Authentication and Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: O nome de usuário
+                  example: "user123"
+                password:
+                  type: string
+                  description: A senha do usuário
+                  example: "password123"
+      responses:
+        "200":
+          description: Token de acesso gerado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: Bearer Token para autenticação
+                    example: "Bearer eyJhbGciOiJIUzI1NiIsInR5..."
+        "404":
+          description: Usuário não encontrado
+  /user:
+    get:
+      summary: Listar usuários
+      tags:
+        - User
+      description: Recupera uma lista de todos os usuários registrados no sistema
+      responses:
+        "200":
+          description: Lista de usuários
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: "Lucas Vieira"
+                        username:
+                          type: string
+                          example: "lucasvieira"
+                        role:
+                          type: string
+                          example: "admin"
+    post:
+      summary: Criar um novo usuário
+      tags:
+        - User
+      description: Cria um novo usuário no sistema
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Nome do usuário
+                  example: "Lucas Vieira"
+                username:
+                  type: string
+                  description: Nome de usuário para login
+                  example: "lucasvieira"
+                password:
+                  type: string
+                  description: Senha do usuário
+                  example: "password123"
+      responses:
+        "201":
+          description: Usuário criado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "user created successfully"
+        "400":
+          description: Erro nos dados fornecidos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "all fields are required"
+  /slot:
+    get:
+      summary: Listar slots de estacionamento
+      tags:
+        - Slot
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: query
+          description: ID do slot a ser exibido
+          required: false
+          schema:
+            type: integer
+      description: Recupera uma lista de slots de estacionamento do banco de dados
+      responses:
+        "200":
+          description: Lista de slots
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    code:
+                      type: string
+                      example: "SLT123"
+                    floor:
+                      type: string
+                      example: "A"
+                    number:
+                      type: integer
+                      example: 12
+    post:
+      summary: Criar um novo slot
+      tags:
+        - Slot
+      security:
+        - bearerAuth: []
+      description: Cria um novo slot no banco de dados
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                  example: "SLT123"
+                floor:
+                  type: string
+                  example: "A"
+                number:
+                  type: integer
+                  example: 12
+      responses:
+        "200":
+          description: Slot criado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Slot criado com sucesso"
+
+  /car:
+    get:
+      summary: Listar carros
+      tags:
+        - Car
+      security:
+        - bearerAuth: []
+      description: Recupera uma lista de carros registrados no sistema
+      responses:
+        "200":
+          description: Lista de carros
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    code:
+                      type: string
+                      example: "CAR123"
+                    lic_plate:
+                      type: string
+                      example: "XYZ1234"
+                    brand:
+                      type: string
+                      example: "Toyota"
+                    model:
+                      type: string
+                      example: "Corolla"
+    post:
+      summary: Registrar um novo carro
+      tags:
+        - Car
+      security:
+        - bearerAuth: []
+      description: Registra um novo carro no sistema
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                  example: "CAR123"
+                lic_plate:
+                  type: string
+                  example: "XYZ1234"
+                brand:
+                  type: string
+                  example: "Toyota"
+                model:
+                  type: string
+                  example: "Corolla"
+      responses:
+        "200":
+          description: Carro registrado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Carro registrado com sucesso"
+
+  /occupation:
+    get:
+      summary: Listar ocupações de vagas
+      tags:
+        - Occupation
+      security:
+        - bearerAuth: []
+      description: Recupera uma lista de ocupações de vagas no estacionamento
+      responses:
+        "200":
+          description: Lista de ocupações
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    slot_id:
+                      type: integer
+                      example: 1
+                    car_id:
+                      type: integer
+                      example: 2
+                    user_id:
+                      type: integer
+                      example: 3
+                    entry:
+                      type: string
+                      format: date-time
+                      example: "2024-09-22T14:30:00Z"
+                    exit:
+                      type: string
+                      format: date-time
+                      example: "2024-09-22T16:45:00Z"
+    post:
+      summary: Criar uma nova ocupação
+      tags:
+        - Occupation
+      security:
+        - bearerAuth: []
+      description: Cria uma nova ocupação de vaga no estacionamento
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                slot_id:
+                  type: integer
+                  example: 1
+                car_id:
+                  type: integer
+                  example: 2
+                user_id:
+                  type: integer
+                  example: 3
+                entry:
+                  type: string
+                  format: date-time
+                  example: "2024-09-22T14:30:00Z"
+                exit:
+                  type: string
+                  format: date-time
+                  example: "2024-09-22T16:45:00Z"
+      responses:
+        "200":
+          description: Ocupação criada com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Ocupação criada com sucesso"

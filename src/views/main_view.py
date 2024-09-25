@@ -21,7 +21,7 @@ def create_slot():
         return jsonify({"error": "some error has occured"}), 400
 
 
-@bp_main.route("/slots", methods=["GET"])
+@bp_main.route("/slot", methods=["GET"])
 @token_required
 def list_slots():
     try:
@@ -42,7 +42,7 @@ def create_car():
         return jsonify({"error": "some error has occured"}), 400
 
 
-@bp_main.route("/cars", methods=["GET"])
+@bp_main.route("/car", methods=["GET"])
 @token_required
 def list_cars():
     try:
@@ -63,7 +63,7 @@ def create_occupation():
         return jsonify({"error": "some error has occured", "specified": e}), 400
 
 
-@bp_main.route("/occupations", methods=["GET"])
+@bp_main.route("/occupation", methods=["GET"])
 @token_required
 def list_occupations():
     try:

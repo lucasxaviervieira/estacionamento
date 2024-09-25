@@ -8,7 +8,7 @@ class Slot(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(12), unique=True, nullable=False)
-    number = db.Column(db.SmallInteger, nullable=False)
+    number = db.Column(db.String(3), nullable=False)
     floor = db.Column(db.String(1), nullable=False)
 
     def __init__(self, code, number, floor):
