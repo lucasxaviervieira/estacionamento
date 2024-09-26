@@ -16,9 +16,12 @@ def create_slot():
     data = request.get_json()
     try:
         response = slot_controller.create_slot(data)
-        response = ({"data": response}), 200
-        return Response(
-            json.dumps(response, sort_keys=False), mimetype="application/json"
+        response = {"data": response}
+        return (
+            Response(
+                json.dumps(response, sort_keys=False), mimetype="application/json"
+            ),
+            200,
         )
     except:
         return jsonify({"error": "some error has occured"}), 400
@@ -29,9 +32,12 @@ def create_slot():
 def list_slots():
     try:
         slots = slot_controller.get_all_slots()
-        response = ({"data": slots}), 200
-        return Response(
-            json.dumps(response, sort_keys=False), mimetype="application/json"
+        response = {"data": slots}
+        return (
+            Response(
+                json.dumps(response, sort_keys=False), mimetype="application/json"
+            ),
+            200,
         )
     except:
         return jsonify({"error": "some error has occured"}), 400
@@ -42,11 +48,15 @@ def list_slots():
 def create_car():
     try:
         data = request.get_json()
-        response = car_controller.create_car(data), 200
-        return Response(
-            json.dumps(response, sort_keys=False), mimetype="application/json"
+        response = car_controller.create_car(data)
+        return (
+            Response(
+                json.dumps(response, sort_keys=False), mimetype="application/json"
+            ),
+            200,
         )
-    except:
+    except Exception as e:
+        return jsonify({"error": e}), 400
         return jsonify({"error": "some error has occured"}), 400
 
 
@@ -55,9 +65,12 @@ def create_car():
 def list_cars():
     try:
         cars = car_controller.get_all_cars()
-        response = ({"data": cars}), 200
-        return Response(
-            json.dumps(response, sort_keys=False), mimetype="application/json"
+        response = {"data": cars}
+        return (
+            Response(
+                json.dumps(response, sort_keys=False), mimetype="application/json"
+            ),
+            200,
         )
     except:
         return jsonify({"error": "some error has occured"}), 400
@@ -68,9 +81,12 @@ def list_cars():
 def create_occupation():
     try:
         data = request.get_json()
-        response = occupation_controller.create_occupation(data), 200
-        return Response(
-            json.dumps(response, sort_keys=False), mimetype="application/json"
+        response = occupation_controller.create_occupation(data)
+        return (
+            Response(
+                json.dumps(response, sort_keys=False), mimetype="application/json"
+            ),
+            200,
         )
     except Exception as e:
         return jsonify({"error": "some error has occured", "specified": e}), 400
@@ -81,9 +97,12 @@ def create_occupation():
 def list_occupations():
     try:
         occupations = occupation_controller.get_all_occupations()
-        response = {"data": occupations}, 200
-        return Response(
-            json.dumps(response, sort_keys=False), mimetype="application/json"
+        response = {"data": occupations}
+        return (
+            Response(
+                json.dumps(response, sort_keys=False), mimetype="application/json"
+            ),
+            200,
         )
     except Exception as e:
         return jsonify({"error": "some error has occured", "specified": e}), 400

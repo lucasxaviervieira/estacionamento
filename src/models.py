@@ -104,9 +104,23 @@ class Occupation(db.Model):
         return OrderedDict(
             {
                 "id": self.id,
-                "car_id": self.car_id,
-                "user_id": self.user_id,
-                "slot_id": self.slot_id,
+                "slot": {
+                    "id": self.slot.id,
+                    "code": self.slot.code,
+                    "number": self.slot.number,
+                    "floor": self.slot.floor,
+                },
+                "car": {
+                    "id": self.car.id if self.car else None,
+                    "lic_plate": self.car.lic_plate if self.car else None,
+                    "brand": self.car.brand if self.car else None,
+                    "model": self.car.model if self.car else None,
+                },
+                "user": {
+                    "id": self.user.id,
+                    "name": self.user.name,
+                    "username": self.user.username,
+                },
                 "entry": self.entry.isoformat() if self.entry else None,
                 "exit": self.exit.isoformat() if self.exit else None,
             }

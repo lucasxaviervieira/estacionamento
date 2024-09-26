@@ -126,7 +126,8 @@
             const access_token = newData.access_token;
             localStorage.setItem("access_token", access_token);
             setTimeout(() => {
-              window.location = "http://localhost:5000/index";
+              const newUrl = window.location.href.replace("/login", "/index");
+              window.location = newUrl;
             }, "300");
           })
           .catch((error) => {

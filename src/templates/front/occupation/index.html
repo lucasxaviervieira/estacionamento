@@ -75,65 +75,32 @@
     <div class="container">
       <h2>Occupation Management</h2>
 
-      <div class="form-group">
-        <label for="occupation">New Occupation:</label>
-        <input type="text" id="occupation" name="occupation" />
-      </div>
-      <button class="btn" id="createOccupationBtn">Create Occupation</button>
-      <div id="createResult" class="result"></div>
-      <div id="createError" class="error"></div>
-
       <button class="btn" id="listOccupationsBtn">List Occupations</button>
-      <div id="listResult" class="result"></div>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>license plate</th>
+            <th>slot</th>
+            <th>entry</th>
+            <th>exit</th>
+          </tr>
+        </thead>
+        <tbody id="tableResult" class="result"></tbody>
+      </table>
       <div id="listError" class="error"></div>
     </div>
 
     <script>
       const bearerToken = localStorage.getItem("access_token");
       document
-        .getElementById("createOccupationBtn")
-        .addEventListener("click", function () {
-          const occupation = document.getElementById("occupation").value.trim();
-          const createError = document.getElementById("createError");
-          const createResult = document.getElementById("createResult");
-
-          if (occupation === "") {
-            createError.textContent = "Occupation field cannot be empty";
-            return;
-          }
-
-          createError.textContent = "";
-
-          fetch("/occupation", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${bearerToken}`,
-            },
-            body: JSON.stringify({ occupation: occupation }),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              if (data.error) {
-                createError.textContent = `Error: ${data.error}`;
-              } else {
-                createResult.textContent = "Occupation created successfully!";
-                document.getElementById("occupation").value = "";
-              }
-            })
-            .catch((error) => {
-              createError.textContent = `Request failed: ${error.message}`;
-            });
-        });
-
-      document
         .getElementById("listOccupationsBtn")
         .addEventListener("click", function () {
           const listError = document.getElementById("listError");
-          const listResult = document.getElementById("listResult");
+          const tableResult = document.getElementById("tableResult");
 
           listError.textContent = "";
-          listResult.textContent = "Loading...";
+          tableResult.textContent = "Loading...";
 
           fetch("/occupation", {
             method: "GET",
@@ -143,24 +110,25 @@
           })
             .then((response) => response.json())
             .then((data) => {
-              const newData = data[0].data;
+              const newData = data.data;
               console.log(newData);
               if (data.error) {
                 listError.textContent = `Error: ${data.error}`;
               } else {
-                const occupations = data[0].data;
+                const occupations = data.data;
                 if (occupations.length === 0) {
-                  listResult.textContent = "No occupations found.";
+                  tableResult.textContent = "No occupations found.";
                 } else {
-                  listResult.innerHTML =
-                    "<ul>" +
-                    occupations
-                      .map(
-                        (occ) =>
-                          `<li>${occ.id},${occ.car_id},${occ.slot_id},${occ.entry}</li>`
-                      )
-                      .join("") +
-                    "</ul>";
+                  tableResult.innerHTML = occupations.map(
+                    (occ) =>
+                      "<tr>" +
+                      `<td>${occ.id}</td>` +
+                      `<td>${occ.car.lic_plate}</td>` +
+                      `<td>${occ.slot.code}</td>` +
+                      `<td>${occ.entry}</td>` +
+                      `<td>${occ.exit}</td>` +
+                      "</tr>"
+                  );
                 }
               }
             })
