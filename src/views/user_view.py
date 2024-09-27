@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from services.verify_route import token_required
+from services.verify_route import token_required, admin_required
 
 from controllers.user_controller import UserController
 
@@ -37,6 +37,25 @@ def create_user():
 
     try:
         user_controller.create_user(data)
+        return jsonify({"message": "user created successfuly"}), 201
+    except:
+        return jsonify({"error": "some error as occurred"}), 400
+
+
+@bp_user.route("/superuser", methods=["POST"])
+@admin_required
+def create_superuser():
+    data = request.get_json()
+    name = data.get("name")
+    username = data.get("username")
+    password = data.get("password")
+    role = "admin"
+
+    if not all([name, username, password]):
+        return jsonify({"error": "all fields are required"}), 400
+
+    try:
+        user_controller.create_user(data, role)
         return jsonify({"message": "user created successfuly"}), 201
     except:
         return jsonify({"error": "some error as occurred"}), 400

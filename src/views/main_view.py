@@ -1,5 +1,6 @@
 from flask import Blueprint, Response, request, json, jsonify
-from services.verify_route import token_required
+from services.verify_route import token_required, admin_required
+
 
 from controllers import SlotController, CarController, OccupationController
 
@@ -12,6 +13,7 @@ occupation_controller = OccupationController()
 
 @bp_main.route("/slot", methods=["POST"])
 @token_required
+@admin_required
 def create_slot():
     data = request.get_json()
     try:
@@ -45,6 +47,7 @@ def list_slots():
 
 @bp_main.route("/car", methods=["POST"])
 @token_required
+@admin_required
 def create_car():
     try:
         data = request.get_json()
@@ -77,6 +80,7 @@ def list_cars():
 
 @bp_main.route("/occupation", methods=["POST"])
 @token_required
+@admin_required
 def create_occupation():
     try:
         data = request.get_json()
@@ -109,6 +113,7 @@ def list_occupations():
 
 @bp_main.route("/occupation/<int:occupation_id>/exit", methods=["PUT"])
 @token_required
+@admin_required
 def update_occupation_exit(occupation_id):
     try:
         response, status_code = occupation_controller.update_exit(occupation_id)
@@ -125,6 +130,7 @@ def update_occupation_exit(occupation_id):
 
 @bp_main.route("/occupation/<int:occupation_id>", methods=["DELETE"])
 @token_required
+@admin_required
 def delete_occupation(occupation_id):
     try:
         response = occupation_controller.delete_occupation(occupation_id)

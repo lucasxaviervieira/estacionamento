@@ -132,6 +132,52 @@ paths:
                   error:
                     type: string
                     example: "all fields are required"
+  /superuser:
+    post:
+      summary: Criar um super usuário
+      tags:
+        - User
+      description: Cria um novo superuser no sistema
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Nome do usuário
+                  example: "Lucas Vieira"
+                username:
+                  type: string
+                  description: Nome de usuário para login
+                  example: "lucasvieira"
+                password:
+                  type: string
+                  description: Senha do usuário
+                  example: "password123"
+      responses:
+        "201":
+          description: Usuário criado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "user created successfully"
+        "400":
+          description: Erro nos dados fornecidos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "all fields are required"
   /slot:
     get:
       summary: Listar slots de estacionamento

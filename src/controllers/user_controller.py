@@ -19,11 +19,10 @@ class UserController:
         user = User.query.filter_by(username=username).first()
         return user.to_dict() if user else None
 
-    def create_user(self, data):
+    def create_user(self, data, role="normal"):
         name = data["name"]
         username = data["username"]
         password = data["password"]
-        role = "normal"
 
         hashed_password = hash.hash_password(password)
 
