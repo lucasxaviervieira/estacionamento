@@ -61,6 +61,8 @@ paths:
       summary: Listar usuários
       tags:
         - User
+      security:
+        - bearerAuth: []
       description: Recupera uma lista de todos os usuários registrados no sistema
       responses:
         "200":
@@ -137,6 +139,8 @@ paths:
       summary: Criar um super usuário
       tags:
         - User
+      security:
+        - bearerAuth: []
       description: Cria um novo superuser no sistema
       requestBody:
         required: true
