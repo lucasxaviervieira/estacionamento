@@ -40,3 +40,15 @@ class OccupationController:
             return {"message": "Occupation updated successfully"}, 200
         except Exception as e:
             return {"error": str(e)}, 400
+
+    def delete_occupation(self, occupation_id):
+        occupation = Occupation.query.get(occupation_id)
+        if not occupation:
+            return {"error": "Occupation not found"}, 404
+
+        try:
+            db.session.delete(occupation)
+            db.session.commit()
+            return {"message": "Occupation deleted successfully"}, 200
+        except Exception as e:
+            return {"error": f"An error occurred: {str(e)}"}, 400

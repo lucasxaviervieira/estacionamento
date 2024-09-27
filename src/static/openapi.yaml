@@ -352,3 +352,75 @@ paths:
                   message:
                     type: string
                     example: "Ocupação criada com sucesso"
+    /occupation/{id}/exit:
+    put:
+      summary: Atualizar horário de saída de uma ocupação
+      tags:
+        - Occupation
+      security:
+        - bearerAuth: []
+      description: Atualiza o horário de saída (exit) de uma ocupação existente
+      parameters:
+        - name: id
+          in: path
+          description: ID da ocupação a ser atualizada
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Ocupação atualizada com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Horário de saída atualizado com sucesso"
+        "404":
+          description: Ocupação não encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Occupation not found"
+        "400":
+          description: Erro ao atualizar ocupação
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "some error has occurred"
+
+  /occupation/{id}:
+    delete:
+      summary: Deletar uma ocupação
+      tags:
+        - Occupation
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da ocupação a ser deletada
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Ocupação deletada com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Ocupação deletada com sucesso"

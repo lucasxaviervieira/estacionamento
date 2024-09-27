@@ -121,3 +121,18 @@ def update_occupation_exit(occupation_id):
 
     except:
         return jsonify({"error": "Some error has occurred"}), 400
+
+
+@bp_main.route("/occupation/<int:occupation_id>", methods=["DELETE"])
+@token_required
+def delete_occupation(occupation_id):
+    try:
+        response = occupation_controller.delete_occupation(occupation_id)
+        return (
+            Response(
+                json.dumps(response, sort_keys=False), mimetype="application/json"
+            ),
+            response[1],
+        )
+    except Exception as e:
+        return jsonify({"error": "some error has occurred", "specified": str(e)}), 400
