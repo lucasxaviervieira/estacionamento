@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from collections import OrderedDict
+from datetime import datetime
 
 db = SQLAlchemy()
 
@@ -86,7 +87,9 @@ class Occupation(db.Model):
     slot_id = db.Column(db.Integer, db.ForeignKey("slot.id"), nullable=False)
     car_id = db.Column(db.Integer, db.ForeignKey("car.id"), nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    entry = db.Column(db.DateTime(timezone=True), nullable=False)
+    entry = db.Column(
+        db.DateTime(timezone=True), nullable=False, default=datetime.utcnow
+    )
     exit = db.Column(db.DateTime(timezone=True), nullable=True)
 
     slot = db.relationship("Slot", backref=db.backref("occupations", lazy=True))

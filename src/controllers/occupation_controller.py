@@ -11,26 +11,32 @@ class OccupationController:
         slot_id = data.get("slot_id")
         car_id = data.get("car_id")
         user_id = data.get("user_id")
-        entry = data.get("entry")
+        entry = None
         exit = None
 
-        if not all([slot_id, user_id, entry]):
-            return {
-                "error": "This fields are requireds: 'Slot', 'Car', 'User' and 'Entry'"
-            }, 400
+        if not all([slot_id, user_id]):
+            return {"error": "This fields are required: 'Slot', 'User'"}, 400
 
         try:
-            entry_datetime = datetime.fromisoformat(entry)
-
             new_occupation = Occupation(
-                slot_id=slot_id,
-                car_id=car_id,
-                user_id=user_id,
-                entry=entry_datetime,
-                exit=exit,
+                slot_id=slot_id, car_id=car_id, user_id=user_id, entry=entry, exit=exit
             )
             db.session.add(new_occupation)
             db.session.commit()
             return {"message": "success"}, 201
+        except Exception as e:
+            return {"error": str(e)}, 400
+
+    def update_exit(self, occupation_id):
+        occupation = Occupation.query.filter_by(id=occupation_id).first()
+
+        if not occupation:
+            return {"error": "Occupation not found"}, 404
+
+        try:
+            exit_datetime = datetime.now()
+            occupation.exit = exit_datetime
+            db.session.commit()
+            return {"message": "Occupation updated successfully"}, 200
         except Exception as e:
             return {"error": str(e)}, 400

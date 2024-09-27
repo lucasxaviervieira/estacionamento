@@ -26,7 +26,6 @@ def list_users():
 
 
 @bp_user.route("/user", methods=["POST"])
-@token_required
 def create_user():
     data = request.get_json()
     name = data.get("name")

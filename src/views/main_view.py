@@ -56,7 +56,6 @@ def create_car():
             200,
         )
     except Exception as e:
-        return jsonify({"error": e}), 400
         return jsonify({"error": "some error has occured"}), 400
 
 
@@ -106,3 +105,19 @@ def list_occupations():
         )
     except Exception as e:
         return jsonify({"error": "some error has occured", "specified": e}), 400
+
+
+@bp_main.route("/occupation/<int:occupation_id>/exit", methods=["PUT"])
+@token_required
+def update_occupation_exit(occupation_id):
+    try:
+        response, status_code = occupation_controller.update_exit(occupation_id)
+        return (
+            Response(
+                json.dumps(response, sort_keys=False), mimetype="application/json"
+            ),
+            status_code,
+        )
+
+    except:
+        return jsonify({"error": "Some error has occurred"}), 400
